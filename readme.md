@@ -5,46 +5,51 @@
 改自 https://github.com/wukongdaily/OpenBackRestore/tree/master
 
 
-## 舉例說明 
-
-假設要備份到 /mnt/sata1-4目錄
-
-執行備份
-
-``
- sh backup.run /mnt/sata1-4' 
-``
 
 
-執行復原
-
-``
- sh restore.run
-``
 
 ---
-## 如何使用？
+## 如何使用？ 備份
 
-- 開啟 cli 介面
+- 開啟 cli 介面 
+- 執行以下指令 有 兩種方式 A. B. 
 
-- 無腦生成備份在 /tmp folder 中
+A. 無腦生成備份在 /tmp folder 中
 
-``
+```
 wget -O backup.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/backup.run && sh backup.run
-``
+```
 
-- 無腦恢復 
-準備好 復原檔案 上傳到 /tmp folder 中
+B. 指定目錄 
+假設要備份到 /mnt/sata1-4目錄
+
+```
+wget -O backup.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/backup.run
+
+sh backup.run /mnt/sata1-4
+```
+
+
+## 如何使用？ 恢復
+
+- 開啟 cli 介面 
+- 執行以下指令 有１種方式 A. 
+
+A . 無腦恢復 
+
+準備好 復原檔案 
+
+上傳到 /tmp folder 中
 
 ![alt text](image.png)
 
 先下載 sh 
-``
+```
 wget -O restore.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/restore.run
-``
+```
 
 執行 
-``
+```
 restore.run
-``
+```
 
