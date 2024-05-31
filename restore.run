@@ -1,0 +1,89 @@
+#!/bin/sh
+# 定義顏色輸出函數
+red() { echo -e "\033[31m\033[01m[WARNING] $1\033[0m"; }
+green() { echo -e "\033[32m\033[01m[INFO] $1\033[0m"; }
+yellow() { echo -e "\033[33m\033[01m[NOTICE] $1\033[0m"; }
+blue() { echo -e "\033[34m\033[01m[MESSAGE] $1\033[0m"; }
+light_magenta() { echo -e "\033[95m\033[01m[NOTICE] $1\033[0m"; }
+light_yellow() { echo -e "\033[93m\033[01m[NOTICE] $1\033[0m"; }
+
+# 檢查文件傳輸是否安裝
+check_istoreos_style_installed() {
+    # 檢查luci-app-filetransfer的一些關鍵文件是否存在
+    CHECK_FILES="/usr/lib/lua/luci/controller/filetransfer.lua
+/usr/lib/lua/luci/view/filetransfer
+/usr/lib/lua/luci/model/cbi/filetransfer"
+
+    # 設置一個標記，用來表示文件是否找到
+    FOUND=0
+
+    for FILE in $CHECK_FILES; do
+        if [ -e "$FILE" ]; then
+            FOUND=1
+            break
+        fi
+    done
+
+    if [ $FOUND -eq 1 ]; then
+        echo "luci-app-filetransfer is installed."
+    else
+        # 先恢復到一鍵iStoreOS風格化
+        wget -O /tmp/restore_origin.sh  https://gitee.com/wukongdaily/gl_onescript/raw/master/restore.sh && sh /tmp/restore_origin.sh 
+    fi
+}
+
+# 恢復標準的iStoreOS
+normal_restore() {
+    mkdir -p /tmp/upload/restore
+    # 提示使用者選擇恢復的文件夾，預設為 /tmp
+    read -p "請輸入要恢復的文件夾 (預設: /tmp): " restore_folder
+    restore_folder=${restore_folder:-/tmp}
+    
+    # 列出該文件夾下以 iStorebk.tar.gz 結尾的檔案
+    istorebk_files=$(find "$restore_folder" -name "*iStorebk.tar.gz")
+    
+    if [ -z "$istorebk_files" ]; then
+        red "在 $restore_folder 下沒有找到以 iStorebk.tar.gz 結尾的檔案。"
+        exit 1
+    fi
+    
+    echo "找到以下備份文件:"
+    select backup_file in $istorebk_files; do
+        if [ -n "$backup_file" ]; then
+            echo "你選擇了: $backup_file"
+            break
+        else
+            red "請選擇有效的文件。"
+        fi
+    done
+    
+    # 檢查選擇的備份文件是否存在
+    if [ -f "$backup_file" ]; then
+        tar -xzvf "$backup_file" -C /tmp/upload/restore
+        cd /tmp/upload/restore
+        # 恢復overlay
+        tar -xzvf overlay_backup.tar.gz -C /
+        green "已經恢復，系統正在重啟....."
+        reboot
+    else
+        red "未能找到選擇的備份文件 $backup_file 。"
+        exit 1
+    fi
+}
+
+restore() {
+    model_info=$(cat /tmp/sysinfo/model)
+    green "型號: $model_info"
+    case "$model_info" in
+    *2500* | *3000* | *6000*)
+        check_istoreos_style_installed
+        normal_restore
+        ;;
+    *)
+        echo "路由器名稱不包含 '3000', '6000', 或 '2500'."
+        normal_restore
+        ;;
+    esac
+}
+
+restore
