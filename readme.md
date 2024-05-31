@@ -16,9 +16,35 @@
 ``
 
 
-
 執行復原
 
 ``
  sh restore.run
 ``
+
+---
+## 如何使用？
+
+- 開啟 cli 介面
+
+- 無腦生成備份在 /tmp folder 中
+
+``
+wget -O backup.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/backup.run && sh backup.run
+``
+
+- 無腦恢復 
+準備好 復原檔案 上傳到 /tmp folder 中
+
+![alt text](image.png)
+
+先下載 sh 
+``
+wget -O restore.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/restore.run
+``
+
+執行 
+``
+restore.run
+``
+

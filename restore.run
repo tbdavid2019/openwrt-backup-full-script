@@ -28,7 +28,7 @@ check_istoreos_style_installed() {
         echo "luci-app-filetransfer is installed."
     else
         # 先恢復到一鍵iStoreOS風格化
-        wget -O /tmp/restore_origin.sh  https://gitee.com/wukongdaily/gl_onescript/raw/master/restore.sh && sh /tmp/restore_origin.sh 
+        wget -O /tmp/restore_origin.sh  https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/restore_origin.sh && sh /tmp/restore_origin.sh 
     fi
 }
 
