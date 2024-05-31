@@ -21,12 +21,14 @@ wget -O backup.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw
 ```
 
 B. 指定目錄 
-假設要備份到 /mnt/sata1-4目錄
 
 ```
-wget -O backup.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/backup.run
+wget -O backup.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/backup.run && chmod +x backup.run
+```
+假設要備份到 /mnt/mmc1-4 目錄
 
-sh backup.run /mnt/sata1-4
+```
+sh backup.run /mnt/mmc1-4
 ```
 
 
@@ -38,14 +40,14 @@ sh backup.run /mnt/sata1-4
 A . 無腦恢復 
 
 準備好 復原檔案 
-
-上傳到 /tmp folder 中
+格式為日期-iStorebk.tar.gz)
+上傳到/tmp/upload目录
 
 ![alt text](image.png)
 
-先下載 sh 
+下載 sh 
 ```
-wget -O restore.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/restore.run
+wget -O restore.run https://github.com/tbdavid2019/openwrt-backup-full-script/raw/main/restore.run && chmod +x restore.run 
 ```
 
 執行 
